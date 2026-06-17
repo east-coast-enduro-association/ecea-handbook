@@ -1,36 +1,26 @@
 # Cloudflare R2 (Media Storage)
 
-Cloudflare R2 stores images, videos, and other media files for the website.
+## Current Status
 
-## Why Separate Storage?
+Cloudflare R2 was evaluated as an external media storage solution for the website but was **not implemented**. Website images are stored directly in the GitHub repository under `src/assets/` instead.
 
-- Keeps the website code repository small and fast
-- Cheaper and faster than storing large files in Git
-- Images load quickly for visitors via Cloudflare's global network
+See [website.md](website.md) for how images are managed today.
 
-## Who Manages This?
+## Why We Evaluated R2
 
-The **Webmaster** handles media uploads. Regular members don't need access to R2.
+The original concern was that storing images in git would bloat the repository. R2 was attractive because:
 
-## Uploading Media for the Website
+- No egress fees (unlike S3 or Cloudinary)
+- S3-compatible API
+- Cheap storage (~$0.015/GB/month)
 
-If you have images or files for the website:
+## Why We Chose Git-Based Storage Instead
 
-1. Send them to the Webmaster via:
-   - Google Drive (share the file/folder)
-   - Zulip (direct message with attachment)
-2. Include:
-   - Where the image should appear on the site
-   - Alt text (description for accessibility)
-   - Any cropping/sizing preferences
+- TinaCMS Cloud uploads images directly to the GitHub repo via the GitHub API — no extra infrastructure needed
+- Astro optimizes all images at build time (converts to WebP, generates responsive sizes), so large source files don't impact page load speed
+- Keeping images in git means content and media are versioned together and deployments are fully self-contained
+- The complexity of a custom Tina media store + Netlify Functions + R2 API credentials was not worth it for our scale
 
-## Technical Details
+## If We Revisit R2 in the Future
 
-For the webmaster and developers:
-
-- **Service**: Cloudflare R2
-- **Access**: Via Cloudflare dashboard or S3-compatible API
-- **Integration**: Tina CMS configured to use R2 for media storage
-- **Public URL pattern**: `https://[bucket].r2.dev/[filename]` (or custom domain)
-
-See the [ecea-ui repository](https://github.com/ECEA/ecea-ui) for technical configuration.
+The original implementation plan is documented in [projects/tina-r2-media-store.md](projects/tina-r2-media-store.md). The main trigger for revisiting would be if the repository grows large enough to slow down Netlify builds or GitHub operations.
