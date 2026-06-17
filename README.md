@@ -9,7 +9,6 @@ This handbook documents the technology systems used by ECEA and how they work to
 | [Google Workspace](google-workspace.md) | Documents, email, file storage | All members |
 | [Zulip](zulip.md) | Team chat and discussions | All members |
 | [Website (ecea.org)](website.md) | Public-facing website | Webmaster |
-| [Cloudflare R2](cloudflare-r2.md) | Website images and media | Webmaster |
 
 ## How It All Connects
 
@@ -26,14 +25,11 @@ This handbook documents the technology systems used by ECEA and how they work to
 
 ┌─────────────────────────────────────────────────────┐
 │                  Public Website                     │
-│            (Astro + Tina CMS + Netlify)            │
-└─────────────────────┬───────────────────────────────┘
-                      │
-                      ▼
-              ┌───────────────┐
-              │ Cloudflare R2 │
-              │ (media files) │
-              └───────────────┘
+│            (Astro + TinaCMS + Netlify)              │
+│                                                     │
+│  Content editing → TinaCMS Cloud → GitHub commit   │
+│  Netlify detects push → builds and deploys (~1 min)│
+└─────────────────────────────────────────────────────┘
 ```
 
 ## Quick Links
@@ -45,4 +41,6 @@ This handbook documents the technology systems used by ECEA and how they work to
 
 For developers and technical contributors:
 
-- [ecea-ui Repository](https://github.com/ECEA/ecea-ui) - Website source code and technical docs
+- [ecea-ui Repository](https://github.com/east-coast-enduro-association/ecea-ui) — Website source code
+- [ecea-tools Repository](https://github.com/east-coast-enduro-association/ecea-tools) — Admin scripts (member roster, MotoTally scraper)
+- [ecea-handbook Repository](https://github.com/east-coast-enduro-association/ecea-handbook) — This handbook
