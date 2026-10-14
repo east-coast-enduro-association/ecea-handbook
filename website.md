@@ -51,6 +51,13 @@ Supported upload locations by content type:
 
 All images are automatically optimized (converted to WebP, resized for different screens) when the site builds.
 
+> **Always add alt text to images.** When you add an image to a blog post, the
+> editor has an "alt" field for a short description of the picture. This is
+> **required** — if you add an image but leave the alt text blank, the next
+> website build will fail and no changes (yours or anyone else's) will go live
+> until it's fixed. Alt text is also what screen readers announce, so it helps
+> visually impaired visitors. One short sentence describing the image is enough.
+
 ## What You Can Edit via TinaCMS
 
 - **Blog Posts** — News, announcements, event recaps
@@ -62,6 +69,36 @@ All images are automatically optimized (converted to WebP, resized for different
 - **Team Results** — Upload CSV results after each enduro team event
 - **Series Pages** — Edit series descriptions and documents
 - **Get Started / FAQ** — Static page content
+
+## Technical Maintenance Notes
+
+For the webmaster / anyone maintaining the site code. Fuller detail lives in the
+repo's [`CODEBASE.md`](https://github.com/east-coast-enduro-association/ecea-ui/blob/master/CODEBASE.md)
+and [`CMS_SETUP.md`](https://github.com/east-coast-enduro-association/ecea-ui/blob/master/CMS_SETUP.md).
+
+- **Framework is pinned to Astro 5 on purpose.** The Tailwind integration caps at
+  Astro 5, and Astro 6 removes the content-collections API the site uses
+  everywhere. Moving to Astro 6/7 is a planned migration, not a routine upgrade —
+  don't bump it casually.
+- **Netlify builds on Node 22** (`NODE_VERSION` in `netlify.toml`), running
+  `npm run build` — which is `astro build` **only**. It does **not** rebuild the
+  TinaCMS `/admin` page.
+- **The `/admin` editor is served from committed files** under `public/admin/`.
+  If you ever run `tinacms build` locally, be careful committing the result:
+  TinaCMS 3 writes a `.gitignore` that hides its own freshly built files, and
+  committing that half-state makes `/admin` break in production. See `CMS_SETUP.md`.
+- **Verifying a deploy**: production deploys from `master` do not report status
+  back to GitHub (only pull-request previews do). Confirm a deploy by loading the
+  live site or checking the Netlify dashboard.
+
+## Planned Changes
+
+- **Moving off Tina Cloud hosting** is intended but **not done yet**. Today the
+  site still uses Tina Cloud for CMS login and saving. TinaCMS (the editor itself)
+  is expected to stay; what changes is where its backend is hosted. This section
+  will be updated when the move actually happens.
+- **Media storage stays in git for now.** Cloudflare R2 was evaluated and
+  **nothing is stored there** — see [cloudflare-r2.md](cloudflare-r2.md).
 
 ## Technical Documentation
 

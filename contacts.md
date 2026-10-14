@@ -18,7 +18,7 @@ Responsible for:
 
 Responsible for:
 - Website content updates
-- Cloudflare R2 (media storage)
+- Website media (images are stored in the website's GitHub repository)
 - Technical website issues
 
 ## General Help
